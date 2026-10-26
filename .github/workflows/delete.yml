@@ -2,7 +2,11 @@ name: Delete old workflow runs
 on:
   schedule:
     - cron: '0 0 * * 0'
-# Run monthly, at 00:00 on the 1st day of month.
+  workflow_dispatch: # 建议加上这行，方便手动点击测试运行
+
+# 必须赋予 actions: write 权限，才能删除运行记录
+permissions:
+  actions: write
 
 jobs:
   del_runs:
@@ -11,6 +15,6 @@ jobs:
       - name: Delete workflow runs
         uses: GitRML/delete-workflow-runs@main
         with:
-          token: ${{ secrets.AUTH_PAT }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.repository }}
           retain_days: 7
